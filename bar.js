@@ -1,1 +1,1 @@
-module.export = "bar"
+module.exports = "bar"
