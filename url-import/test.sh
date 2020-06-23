@@ -7,7 +7,7 @@ cd "$BASEDIR" || exit
 # the same location. Helps Hierarchy determine
 # what the ideal resolve path looks like.
 
-function test {
+test {
   START=$1
   AA=$2
   BB=$3
@@ -28,13 +28,13 @@ function test {
   [[ "$A" == "$B" ]] || { echo >&2 "Not Match"; exit 1; }
 }
 
-function pre {
+pre {
   mkdir -p a/a/foo/a/a
   mkdir -p a/a/bar/a/a
   mkdir -p a/a/baz/a/a
 }
 
-function post {
+post {
   rm -rf ./a
   cd "$BASEDIR" || exit
 }
