@@ -1,10 +1,7 @@
 {
-  "name": "root",
+  "name": "@reggi/modules",
   "private": true,
   "devDependencies": {
-    "lerna": "^3.20.2"
-  },
-  "dependencies": {
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   }
