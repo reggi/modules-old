@@ -27,7 +27,7 @@ test() {
 
   cd "$BASEDIR" || exit
 
-  if [[ "$A" != "$B" ]]; then
+  if [ "$A" != "$B" ]; then
     echo >&2 "Not Match for (($A and $B))" && exit 1
   fi
 
