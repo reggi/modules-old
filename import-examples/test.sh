@@ -1,6 +1,5 @@
 #!/bin/bash 
-set -e 
-set -o pipefail
+set -e
 
 find . -name "node_modules" -exec rm -rf '{}' +
 # find . -name 'package-lock.json' -type f -delete
