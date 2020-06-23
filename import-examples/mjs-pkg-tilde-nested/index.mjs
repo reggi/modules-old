@@ -1,3 +1,6 @@
 import tilde from '~'
 
-export default tilde
+export default {
+  ...tilde,
+  id: 'mjs-pkg-tilde-nested'
+}

@@ -1,4 +1,6 @@
-// @ts-ignore
 import tilde from '~'
 
-export default tilde
+export default {
+  ...tilde,
+  id: 'ts-pkg-tilde-nested'
+}

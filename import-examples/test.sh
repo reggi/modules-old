@@ -2,33 +2,40 @@
 set -e
 
 find . -name "node_modules" -exec rm -rf '{}' +
-# find . -name 'package-lock.json' -type f -delete
+
+if [ -z "$CI" ]
+then
+  echo "\$CI is not set, delete package locks"
+  find . -name 'package-lock.json' -type f -delete
+else
+  echo "\$CI is set"
+fi
 
 alias ts-node=../node_modules/.bin/ts-node
 
-node ./js-no-pkg/index.js
+node ./js-no-pkg/test.js
 echo "js-no-pkg ✅"
 
-npm -C ./js-pkg-tilde -s install && node ./js-pkg-tilde/index.js
+npm -C ./js-pkg-tilde -s install && node ./js-pkg-tilde/test.js
 echo "js-pkg-tilde ✅"
 
-npm -C ./js-pkg-tilde-nested -s install && node ./js-pkg-tilde-nested/index.js
+npm -C ./js-pkg-tilde-nested -s install && node ./js-pkg-tilde-nested/test.js
 echo "js-pkg-tilde-nested ✅"
 
-node --experimental-modules ./mjs-no-pkg/index.mjs
+node --experimental-modules ./mjs-no-pkg/test.mjs
 echo "mjs-no-pkg ✅"
 
-npm -C ./mjs-pkg-tilde -s install && node --experimental-modules ./mjs-pkg-tilde/index.mjs
+npm -C ./mjs-pkg-tilde -s install && node --experimental-modules ./mjs-pkg-tilde/test.mjs
 echo "mjs-pkg-tilde ✅"
 
-npm -C ./mjs-pkg-tilde-nested -s install && node --experimental-modules ./mjs-pkg-tilde-nested/index.mjs
+npm -C ./mjs-pkg-tilde-nested -s install && node --experimental-modules ./mjs-pkg-tilde-nested/test.mjs
 echo "mjs-pkg-tilde-nested ✅"
 
 ts-node ./ts-no-pkg/index.ts
 echo "ts-no-pkg ✅"
 
-npm -C ./ts-pkg-tilde -s install && ts-node ./ts-pkg-tilde/index.ts
+npm -C ./ts-pkg-tilde -s install && ts-node -p ./ts-pkg-tilde/tsconfig.json ./ts-pkg-tilde/test.ts
 echo "ts-pkg-tilde ✅"
 
-npm -C ./ts-pkg-tilde-nested -s install && ts-node ./ts-pkg-tilde-nested/index.ts
+npm -C ./ts-pkg-tilde-nested -s install && ts-node -p ./ts-pkg-tilde-nested/tsconfig.json ./ts-pkg-tilde-nested/test.ts
 echo "ts-pkg-tilde-nested ✅"
