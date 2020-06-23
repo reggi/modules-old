@@ -4,6 +4,8 @@ set -e
 find . -name "node_modules" -exec rm -rf '{}' +
 # find . -name 'package-lock.json' -type f -delete
 
+alias ts-node=../node_modules/.bin/ts-node
+
 node ./js-no-pkg/index.js
 echo "js-no-pkg ✅"
 
@@ -21,3 +23,12 @@ echo "mjs-pkg-tilde ✅"
 
 npm -C ./mjs-pkg-tilde-nested -s install && node --experimental-modules ./mjs-pkg-tilde-nested/index.mjs
 echo "mjs-pkg-tilde-nested ✅"
+
+ts-node ./ts-no-pkg/index.ts
+echo "ts-no-pkg ✅"
+
+npm -C ./ts-pkg-tilde -s install && ts-node ./ts-pkg-tilde/index.ts
+echo "ts-pkg-tilde ✅"
+
+npm -C ./ts-pkg-tilde-nested -s install && ts-node ./ts-pkg-tilde-nested/index.ts
+echo "ts-pkg-tilde-nested ✅"
