@@ -1,6 +1,9 @@
 #!/bin/bash 
 BASEDIR="$(cd "$(dirname "$0")"; pwd)"
-cd "$BASEDIR"
+echo '----------------------------------------'
+echo "testing $BASEDIR"
+echo '----------------------------------------'
+cd "$BASEDIR" || exit
 
 set -e
 
