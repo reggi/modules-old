@@ -1,4 +1,7 @@
 #!/bin/bash 
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd "$parent_path"
+
 set -e
 
 find . -name "node_modules" -exec rm -rf '{}' +
