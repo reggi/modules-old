@@ -12,11 +12,6 @@ test() {
   AA=$2
   BB=$3
 
-  echo $BASEDIR
-  echo $START
-  echo $AA
-  echo $BB
-
   cd "$START" || exit
   START=$(pwd)
 
@@ -30,16 +25,13 @@ test() {
 
   cd "$BASEDIR" || exit
 
-  echo $A
-  echo $B
-
-  [[ "$A" == "$B" ]] || { echo >&2 "Not Match"; exit 1; }
+  [[ "$A" == "$B" ]] || { echo >&2 "Not Match for (($A and $B))"; exit 1; }
 }
 
 pre() {
-  mkdir -p a/a/foo/a/a
-  mkdir -p a/a/bar/a/a
-  mkdir -p a/a/baz/a/a
+  mkdir -p ./a/a/foo/a/a
+  mkdir -p ./a/a/bar/a/a
+  mkdir -p ./a/a/baz/a/a
 }
 
 post() {
@@ -50,7 +42,7 @@ post() {
 pre
 test "$BASEDIR" "../url-import/../url-import/../url-import/../url-import/" "../url-import"
 test "./a/a/foo/a" "../../foo/../bar/../baz" "../../baz"
-test "./a/as" "./foo/a/../a/" "./foo/a"
+test "./a/a" "./foo/a/../a/" "./foo/a"
 post
 echo "unix cases ✅"
 
