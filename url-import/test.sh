@@ -25,6 +25,9 @@ test() {
 
   cd "$BASEDIR" || exit
 
+  echo $A
+  echo $B
+
   [[ "$A" == "$B" ]] || { echo >&2 "Not Match"; exit 1; }
 }
 
