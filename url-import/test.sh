@@ -1,5 +1,5 @@
 #!/bin/bash
-BASEDIR="$(cd "$(dirname "$0")"; pwd)";
+BASEDIR="$(cd "$(dirname "$0")"; pwd)"
 echo "$BASEDIR"
 cd "$BASEDIR"
 
