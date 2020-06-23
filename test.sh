@@ -1,4 +1,4 @@
 #!/bin/bash
 
-# sh ./import-examples/test.sh
+sh ./import-examples/test.sh
 sh ./url-import/test.sh
