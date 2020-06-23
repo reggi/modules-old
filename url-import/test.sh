@@ -12,6 +12,11 @@ test() {
   AA=$2
   BB=$3
 
+  echo $BASEDIR
+  echo $START
+  echo $AA
+  echo $BB
+
   cd "$START" || exit
   START=$(pwd)
 
@@ -44,8 +49,8 @@ post() {
 
 pre
 test "$BASEDIR" "../url-import/../url-import/../url-import/../url-import/" "../url-import"
-test ./a/a/foo/a "../../foo/../bar/../baz" "../../baz"
-test ./a/a "./foo/a/../a/" "./foo/a"
+test "./a/a/foo/a" "../../foo/../bar/../baz" "../../baz"
+test "./a/as" "./foo/a/../a/" "./foo/a"
 post
 echo "unix cases ✅"
 
