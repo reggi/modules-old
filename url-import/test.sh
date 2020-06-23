@@ -1,12 +1,13 @@
 #!/bin/bash
-parentdir="$(dirname "$dir")"
-cd "$parentdir"
+BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$BASEDIR"
 
 # This is meant to test the unix system to if two
 # different change directory commands end up in
 # the same location. Helps Hierarchy determine
 # what the ideal resolve path looks like.
 function test () {
+  pwd
   START=$1
   AA=$2
   BB=$3
@@ -22,19 +23,27 @@ function test () {
   cd "$BB"
   B=`pwd`
 
-  cd "$parentdir"
+  cd "$BASEDIR"
 
   [[ "$A" == "$B" ]] || { echo >&2 "Not Match"; exit 1; }
 }
 
-mkdir -p a/a/foo/a/a
-mkdir -p a/a/bar/a/a
-mkdir -p a/a/baz/a/a
+function pre () {
+  mkdir -p a/a/foo/a/a
+  mkdir -p a/a/bar/a/a
+  mkdir -p a/a/baz/a/a
+}
 
-test $parentdir "../url-import/../url-import/../url-import/../url-import/" "../url-import"
+function post () {
+  rm -rf ./a
+  cd $BASEDIR
+}
+
+pre
+test $BASEDIR "../url-import/../url-import/../url-import/../url-import/" "../url-import"
 test ./a/a/foo/a "../../foo/../bar/../baz" "../../baz"
 test ./a/a "./foo/a/../a/" "./foo/a"
-rm -rf ./a
+post
 echo "unix cases ✅"
 
 alias ts-node=../node_modules/.bin/ts-node
