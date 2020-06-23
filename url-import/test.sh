@@ -1,6 +1,6 @@
 #!/bin/bash
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-cd "$parent_path"
+parentdir="$(dirname "$dir")"
+cd "$parentdir"
 
 # This is meant to test the unix system to if two
 # different change directory commands end up in
@@ -22,7 +22,7 @@ function test () {
   cd "$BB"
   B=`pwd`
 
-  cd "$parent_path"
+  cd "$parentdir"
 
   [[ "$A" == "$B" ]] || { echo >&2 "Not Match"; exit 1; }
 }
@@ -31,7 +31,7 @@ mkdir -p a/a/foo/a/a
 mkdir -p a/a/bar/a/a
 mkdir -p a/a/baz/a/a
 
-test $parent_path "../url-import/../url-import/../url-import/../url-import/" "../url-import"
+test $parentdir "../url-import/../url-import/../url-import/../url-import/" "../url-import"
 test ./a/a/foo/a "../../foo/../bar/../baz" "../../baz"
 test ./a/a "./foo/a/../a/" "./foo/a"
 rm -rf ./a
