@@ -25,6 +25,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - run: bash ./test.sh
+    - run: ./test.sh
       env:
           CI: true
