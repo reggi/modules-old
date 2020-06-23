@@ -1,6 +1,6 @@
 #!/bin/bash
 BASEDIR="$(cd "$(dirname "$0")"; pwd)"
-cd "$BASEDIR";
+cd "$BASEDIR" || exit
 
 # This is meant to test the unix system to if two
 # different change directory commands end up in
@@ -12,18 +12,18 @@ function test() {
   AA=$2
   BB=$3
 
-  cd "$START"
-  START=`pwd`
+  cd "$START" || exit
+  START=$(pwd)
 
-  cd "$AA"
-  A=`pwd`
+  cd "$AA" || exit
+  A=$(pwd)
 
-  cd "$START"
+  cd "$START" || exit
 
-  cd "$BB"
-  B=`pwd`
+  cd "$BB" || exit
+  B=$(pwd)
 
-  cd "$BASEDIR"
+  cd "$BASEDIR" || exit
 
   [[ "$A" == "$B" ]] || { echo >&2 "Not Match"; exit 1; }
 }
@@ -36,11 +36,11 @@ function pre() {
 
 function post() {
   rm -rf ./a
-  cd $BASEDIR
+  cd "$BASEDIR" || exit
 }
 
 pre
-test $BASEDIR "../url-import/../url-import/../url-import/../url-import/" "../url-import"
+test "$BASEDIR" "../url-import/../url-import/../url-import/../url-import/" "../url-import"
 test ./a/a/foo/a "../../foo/../bar/../baz" "../../baz"
 test ./a/a "./foo/a/../a/" "./foo/a"
 post
