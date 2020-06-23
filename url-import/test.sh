@@ -1,6 +1,8 @@
 #!/bin/bash
 BASEDIR="$(cd "$(dirname "$0")"; pwd)"
 cd "$BASEDIR" || exit
+echo "$BASEDIR"
+pwd
 
 # This is meant to test the unix system to if two
 # different change directory commands end up in
