@@ -24,4 +24,4 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: sh ./import-examples/test.sh
+    - run: cd ./import-examples sh ./test.sh
