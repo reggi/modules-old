@@ -1,5 +1,6 @@
 #!/bin/bash
-BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+echo "$BASEDIR"
 cd "$BASEDIR"
 
 # This is meant to test the unix system to if two
