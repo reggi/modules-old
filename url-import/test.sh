@@ -54,4 +54,7 @@ echo "unix cases ✅"
 
 alias ts-node=../node_modules/.bin/ts-node
 ts-node ./hierarchy_test_node.ts
-echo "typescript cases ✅"
+echo "hierarchy_test_node cases ✅"
+
+ts-node ./url_test_node.ts
+echo "url_test_node cases ✅"
