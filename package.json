@@ -2,10 +2,12 @@
   "name": "@reggi/modules",
   "private": true,
   "devDependencies": {
+    "@types/download": "^6.2.4",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   },
   "dependencies": {
-    "@types/node": "^14.0.13"
+    "@types/node": "^14.0.13",
+    "download": "^8.0.0"
   }
 }

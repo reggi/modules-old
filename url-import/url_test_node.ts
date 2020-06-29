@@ -40,3 +40,6 @@ namespace child_has_ext {
   ])
 }
 
+// const x = new Url('https://mod.reggi.com/import-examples/js-no-pkg/index.js')
+// const u = x.resolve('../js-pkg-tilde-nested/mod.ts')
+// console.log(u.localize)

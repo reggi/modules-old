@@ -3,9 +3,13 @@ import { ExtendUrl } from './extend_url'
 import { System } from './system'
 
 export class Url extends ExtendUrl { 
-  parent: Url
+  parent?: Url
   constructor(url: string) { 
     super(url)
+  }
+
+  static parse(url: string) { 
+    return new Url(url)
   }
 
   get pathnameSplit() { 
@@ -49,6 +53,12 @@ export class Url extends ExtendUrl {
     return parts.join(System.sep)
   }
 
+  get localizeDir() {
+    const directory = this.localize.split('/')
+    directory.pop()
+    return directory.join('/')
+  }
+
   resolve(path: string) {
     const u = new Url(this.toString())
     u.pathname = Hierarchy.resolve('/' + this.dirname + '/' + path)
@@ -58,7 +68,7 @@ export class Url extends ExtendUrl {
 
   discoverFile() {
     if (this.hasExt) return [this]
-    const parentExt = this.parent.hasExt
+    const parentExt = this.parent?.hasExt
     const findExt = ['.js', '.json']
     const top = parentExt ? [this.parent.ext] : []
     const priorityExt = [...top, ...findExt]

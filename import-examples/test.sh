@@ -22,6 +22,9 @@ alias ts-node=../node_modules/.bin/ts-node
 node ./js-no-pkg/test.js
 echo "js-no-pkg ✅"
 
+node ./js-pkg/test.js
+echo "js-pkg ✅"
+
 npm -C ./js-pkg-tilde -s install && node ./js-pkg-tilde/test.js
 echo "js-pkg-tilde ✅"
 
