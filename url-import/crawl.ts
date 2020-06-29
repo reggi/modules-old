@@ -1,12 +1,13 @@
 import * as path from 'path'
 import * as download from 'download'
 import { Url } from './Url'
+import { dependencies } from './depend'
 
 class PackageCache {
   store: any = { }
 
-  add(url: string, pkg: any) { 
-    this.store[url] = pkg
+  add(item: { url: Url, pkg: any }) { 
+    this.store[item.url.toString()] = item.pkg
   }
 
   find(url: string) {
@@ -30,16 +31,28 @@ function pkgHandler(url: Url, cache: PackageCache, pkgdir: string) {
   return false
 }
 
-async function attemptDownload(url: Url, dir: string = __dirname): Promise<string | undefined> {
+async function attemptDownload(url: Url, dir: string = __dirname) {
   try {
     const buf = await download(
       url.toString(),
       path.join(dir, url.localizeDir),
       { filename: url.basename }
     )
-    return buf.toString('utf-8')
+    const file = buf.toString('utf-8')
+    if (url.basename === 'package.json') { 
+      const parsed = JSON.parse(file)
+      if (parsed.main) { 
+        const newTip = url.resolve(parsed.main)
+        const results = await attemptDownload(newTip, dir)
+        if (results) { 
+          return { ...results, pkg: { parsed, url} }
+        }
+        return { pkg: { parsed, url } }
+      }
+    }
+    return { file, url }
   } catch (e) { 
-    return
+    return { url }
   }
 }
 
@@ -48,10 +61,10 @@ async function downloadUrl(url: Url, dir: string = __dirname) {
   const urls = url.discoverFile()
   const results = await Promise.all(urls.map(async url => {
     if (found) return;
-    const file = await attemptDownload(url, dir)
-    if (file) { 
+    const result = await attemptDownload(url, dir)
+    if (result?.file) {
       found = true
-      return { file, url }
+      return result
     }
     return;
   }))
@@ -80,7 +93,12 @@ async function downloadUrl(url: Url, dir: string = __dirname) {
 async function crawl(tip: string) {
   const cache = new PackageCache()
   const url = Url.parse(tip)
-  return await downloadUrl(url, path.join(__dirname, '../downloads'))
+  const results = await downloadUrl(url, path.join(__dirname, '../downloads'))
+  if (results?.pkg) cache.add(results.pkg)
+  if (results?.file) {
+    const { npm, url, nodeNative } = dependencies(results.file)
+    console.log({ npm, url, nodeNative })
+  }
 }
 
 crawl('https://raw.githubusercontent.com/reggi/modules/master/import-examples/js-pkg').then(console.log)
