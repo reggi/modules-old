@@ -1,6 +1,9 @@
+import * as module from 'module'
 import babelTraverse from '@babel/traverse'
 import * as babelParser from '@babel/parser'
 import { File } from '@babel/types'
+
+const nativeList = module.builtinModules
 
 class Depend { 
   nodes: File
@@ -15,16 +18,24 @@ class Depend {
   }
 
   static REQUIRE = 'require'
-  // static URL_IMPORT = 'url-import'
-  static URL_IMPORT = './mod.js'
+  static URL_IMPORT = 'url-import'
+  // static URL_IMPORT = './mod.js'
 
-  urls() {
+
+  traverse() {
     const requiredAs = []
+  
+    const modules = []
 
     babelTraverse(this.nodes, {
+      ImportDeclaration: (path) => { 
+        modules.push(path.node.source.value)
+      },
       CallExpression: (path) => {
         // @ts-ignore
         const isRequire = path.node?.callee?.name === Depend.REQUIRE
+        // @ts-ignore
+        if (isRequire) modules.push(path.node?.arguments[0]?.value)
         // @ts-ignore
         const isUrlImportModule = path.node?.arguments[0]?.extra?.rawValue === Depend.URL_IMPORT
         // @ts-ignore
@@ -89,15 +100,23 @@ class Depend {
         }
       }
     })
-    return urls
+    return {urls, modules}
   }
 }
 
+
+
 export function dependencies(code: string) { 
   const d = Depend.load(code)
-  return { 
-    npm: [],
-    nodeNative: [],
-    url: d.urls()
-  }
+  const { urls, modules } = d.traverse()
+  const IS_LOCAL = /^\.\.\/|^\.\/|^\//
+  const isLocal = (string) => string.match(IS_LOCAL)
+  const isNotLocal = (string) => !string.match(IS_LOCAL)
+  const local = modules.filter(isLocal)
+  const nonLocal = modules.filter(isNotLocal)
+  const isNative = (string) => nativeList.includes(string)
+  const isNotNative = (string) => !nativeList.includes(string)
+  const native = nonLocal.filter(isNative)
+  const nonNative = nonLocal.filter(isNotNative)
+  return { urls, local, native, nonNative }
 }

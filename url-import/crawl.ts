@@ -96,9 +96,9 @@ async function crawl(tip: string) {
   const results = await downloadUrl(url, path.join(__dirname, '../downloads'))
   if (results?.pkg) cache.add(results.pkg)
   if (results?.file) {
-    const { npm, url, nodeNative } = dependencies(results.file)
-    console.log({ npm, url, nodeNative })
+    const { urls, local, native, nonNative } = dependencies(results.file)
+    console.log({ urls, local, native, nonNative })
   }
 }
 
-crawl('https://raw.githubusercontent.com/reggi/modules/master/import-examples/js-pkg').then(console.log)
+crawl('https://raw.githubusercontent.com/reggi/modules/master/import-examples/js-pkg-tilde/index.js').then(console.log)
